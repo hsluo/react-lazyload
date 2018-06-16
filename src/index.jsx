@@ -125,6 +125,11 @@ const checkVisible = function checkVisible(component) {
   const visible = isOverflow ?
                   checkOverflowVisible(component, parent) :
                   checkNormalVisible(component);
+
+  if (!visible && component.visible && component.props.onLeave) {
+    component.props.onLeave();
+  }
+
   if (visible) {
     // Avoid extra render if previously is visible
     if (!component.visible) {
@@ -278,7 +283,8 @@ LazyLoad.propTypes = {
   throttle: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
   debounce: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
   placeholder: PropTypes.node,
-  unmountIfInvisible: PropTypes.bool
+  unmountIfInvisible: PropTypes.bool,
+  onLeave: PropTypes.func,
 };
 
 LazyLoad.defaultProps = {
